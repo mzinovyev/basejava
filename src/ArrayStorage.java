@@ -19,7 +19,7 @@ public class ArrayStorage {
         if (lastUsedIndex == storage.length) {
             System.out.println("Error: storage if full");
         } else {
-            lastUsedIndex += 1;
+            lastUsedIndex ++;
             storage[lastUsedIndex] = r;
         }
     }
@@ -35,7 +35,7 @@ public class ArrayStorage {
         if (foundedIndex >= 0) {
             storage[foundedIndex] = storage[lastUsedIndex];
             storage[lastUsedIndex] = null;
-            lastUsedIndex -= 1;
+            lastUsedIndex --;
         } else {
             System.out.println("Cant find uuid 2 delete resume");
         }
