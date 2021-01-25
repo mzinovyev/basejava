@@ -33,11 +33,9 @@ public class ArrayStorage {
     void delete(String uuid) {
         int foundedIndex = search(uuid);
         if (foundedIndex >= 0) {
-            System.out.println("foundedIndex: " + foundedIndex);
             storage[foundedIndex] = storage[lastUsedIndex];
             storage[lastUsedIndex] = null;
             lastUsedIndex -= 1;
-            System.out.println("lastUsedIndex: " + lastUsedIndex);
         } else {
             System.out.println("Cant find uuid 2 delete resume");
         }
