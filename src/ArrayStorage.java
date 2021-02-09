@@ -30,7 +30,7 @@ public class ArrayStorage {
         }
     }
 
-    public void update(Resume resume) {a
+    public void update(Resume resume) {
         int foundedIndex = search(resume.uuid);
         if (foundedIndex >= 0) {
             storage[foundedIndex] = resume;
