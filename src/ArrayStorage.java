@@ -5,46 +5,62 @@
 import java.util.Arrays;
 
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int lastUsedIndex = -1;
+    private Resume[] storage = new Resume[10_000];
+    private int lastUsedIndex = -1;
 
-    void clear() {
+    public void clear() {
         if (lastUsedIndex != -1) {
             Arrays.fill(storage, 0, lastUsedIndex + 1, null);
             lastUsedIndex = -1;
         }
     }
 
-    void save(Resume r) {
+    public void save(Resume resume) {
         if (lastUsedIndex == storage.length) {
-            System.out.println("Error: storage if full");
+            System.out.println("Error saving resume with UUID " + resume.uuid + " : storage is full");
         } else {
-            lastUsedIndex ++;
-            storage[lastUsedIndex] = r;
+            int foundedIndex = search(resume.uuid);
+            if (foundedIndex < 0) {
+                lastUsedIndex ++;
+                storage[lastUsedIndex] = resume;
+            } else {
+                System.out.println("Can't Save. Resume with UUID " + resume.uuid + " already exist");
+            }
+
         }
     }
 
-    Resume get(String uuid) {
+    public void update(Resume resume) {a
+        int foundedIndex = search(resume.uuid);
+        if (foundedIndex >= 0) {
+            storage[foundedIndex] = resume;
+        } else {
+            System.out.println("Can't Update. Resume with UUID " + resume.uuid + " not found");
+        }
+    }
+
+    public Resume get(String uuid) {
         int foundedIndex = search(uuid);
         if (foundedIndex >= 0) return storage[foundedIndex];
+        System.out.println("Can't Get. Resume with UUID " + uuid + " not found");
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int foundedIndex = search(uuid);
         if (foundedIndex >= 0) {
             storage[foundedIndex] = storage[lastUsedIndex];
             storage[lastUsedIndex] = null;
             lastUsedIndex --;
         } else {
-            System.out.println("Cant find uuid 2 delete resume");
+            System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
         }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         if (lastUsedIndex >= 0) return Arrays.copyOf(storage, lastUsedIndex + 1);
         else return new  Resume[0];
     }
@@ -53,7 +69,7 @@ public class ArrayStorage {
         return lastUsedIndex + 1;
     }
 
-    // If element with uuid founded? return index. Else, return -1;
+    // If element with uuid founded, return index. Else, return -1;
     private int search(String uuid) {
         for (int i = 0; i <= lastUsedIndex; i++) {
             if (storage[i].uuid == uuid) {
