@@ -1,7 +1,6 @@
-/**
- * Array based storage for Resumes
- */
+package com.urise.webapp.storage;
 
+import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 
 public class ArrayStorage {
@@ -34,6 +33,7 @@ public class ArrayStorage {
         int foundedIndex = search(resume.toString());
         if (foundedIndex >= 0) {
             storage[foundedIndex] = resume;
+            System.out.println("Updated. Resume with UUID " + resume.toString());
         } else {
             System.out.println("Can't Update. Resume with UUID " + resume.toString() + " not found");
         }
@@ -64,7 +64,7 @@ public class ArrayStorage {
         return Arrays.copyOf(storage, lastUsedIndex + 1);
     }
 
-    int size() {
+    public int size() {
         return lastUsedIndex + 1;
     }
 
