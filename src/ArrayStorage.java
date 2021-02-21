@@ -17,25 +17,25 @@ public class ArrayStorage {
 
     public void save(Resume resume) {
         if (lastUsedIndex == storage.length) {
-            System.out.println("Error saving resume with UUID " + resume.uuid + " : storage is full");
+            System.out.println("Error saving resume with UUID " + resume.toString() + " : storage is full");
         } else {
-            int foundedIndex = search(resume.uuid);
+            int foundedIndex = search(resume.toString());
             if (foundedIndex < 0) {
-                lastUsedIndex ++;
+                lastUsedIndex++;
                 storage[lastUsedIndex] = resume;
             } else {
-                System.out.println("Can't Save. Resume with UUID " + resume.uuid + " already exist");
+                System.out.println("Can't Save. Resume with UUID " + resume.toString() + " already exist");
             }
 
         }
     }
 
     public void update(Resume resume) {
-        int foundedIndex = search(resume.uuid);
+        int foundedIndex = search(resume.toString());
         if (foundedIndex >= 0) {
             storage[foundedIndex] = resume;
         } else {
-            System.out.println("Can't Update. Resume with UUID " + resume.uuid + " not found");
+            System.out.println("Can't Update. Resume with UUID " + resume.toString() + " not found");
         }
     }
 
@@ -51,7 +51,7 @@ public class ArrayStorage {
         if (foundedIndex >= 0) {
             storage[foundedIndex] = storage[lastUsedIndex];
             storage[lastUsedIndex] = null;
-            lastUsedIndex --;
+            lastUsedIndex--;
         } else {
             System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
         }
@@ -61,8 +61,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        if (lastUsedIndex >= 0) return Arrays.copyOf(storage, lastUsedIndex + 1);
-        else return new  Resume[0];
+        return Arrays.copyOf(storage, lastUsedIndex + 1);
     }
 
     int size() {
@@ -72,7 +71,7 @@ public class ArrayStorage {
     // If element with uuid founded, return index. Else, return -1;
     private int search(String uuid) {
         for (int i = 0; i <= lastUsedIndex; i++) {
-            if (storage[i].uuid == uuid) {
+            if (storage[i].toString() == uuid) {
                 return i;
             }
         }
