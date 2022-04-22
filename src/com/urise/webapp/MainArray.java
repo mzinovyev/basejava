@@ -1,10 +1,11 @@
 package com.urise.webapp;
 
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.urise.webapp.storage.ArrayStorage;
-import com.urise.webapp.model.Resume;
 
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
