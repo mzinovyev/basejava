@@ -31,20 +31,37 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        int foundedIndex;
         if(lastUsedIndex < 0) { //check if array is empty
-            foundedIndex = 0;
-        } else {
-            foundedIndex = search(r);
-            if (!(foundedIndex < 0)) {
-                System.out.println("Can't Save. Resume with UUID " + r.toString() + " already exist");
-                return;
-            }
+            storage[0] = r;
+            lastUsedIndex = 0;
+            return;
         }
 
-        insertItem(r, foundedIndex);
+        int searchResult = search(r);
+        if (searchResult >= 0) {
+            System.out.println("Can't Save. Resume with UUID " + r.toString() + " already exist");
+            return;
+        }
+
+        insertItem(r, - (searchResult + 1)); //
     }
 
+    public void delete(String uuid) {
+        Resume r = new Resume(uuid);
+        int searchResult = search(r);
+        if (searchResult < 0) {
+            System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
+            return;
+        }
+
+        if (searchResult == lastUsedIndex) { // delete last element
+            storage[searchResult] = null;
+            lastUsedIndex -= 1;
+            return;
+        }
+
+        deleteItem(searchResult);
+    }
     public Resume get(String uuid) {
         Resume r = new Resume(uuid);
         int foundedIndex = search(r);
@@ -56,15 +73,21 @@ public abstract class  AbstractArrayStorage implements Storage {
         }
     }
 
-    public int size() {
-        return lastUsedIndex + 1;
-    }
-
     public Resume[] getAll() {
         return Arrays.copyOf(storage, lastUsedIndex + 1);
     }
 
+    public int size() {
+        return lastUsedIndex + 1;
+    }
+
     protected abstract void insertItem(Resume r, int foundedIndex);
+
+    protected void deleteItem(int foundedIndex){
+        System.arraycopy(storage, foundedIndex + 1, storage, foundedIndex, lastUsedIndex - foundedIndex);
+        storage[lastUsedIndex] = null;
+        lastUsedIndex--;
+    }
 
     protected abstract int search(Resume r);
 }
