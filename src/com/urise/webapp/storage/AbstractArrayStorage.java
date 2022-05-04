@@ -16,12 +16,12 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        int foundedIndex = search(r);
+        int foundedIndex = search(r.toString());
         if (foundedIndex >= 0) {
             storage[foundedIndex] = r;
-            System.out.println("Updated. Resume with UUID " + r.toString());
+            System.out.println("Updated. Resume with UUID " + r);
         } else {
-            System.out.println("Can't Update. Resume with UUID " + r.toString() + " not found");
+            System.out.println("Can't Update. Resume with UUID " + r + " not found");
         }
     }
 
@@ -37,9 +37,9 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        int searchResult = search(r);
+        int searchResult = search(r.toString());
         if (searchResult >= 0) {
-            System.out.println("Can't Save. Resume with UUID " + r.toString() + " already exist");
+            System.out.println("Can't Save. Resume with UUID " + r + " already exist");
             return;
         }
 
@@ -47,8 +47,7 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        Resume r = new Resume(uuid);
-        int searchResult = search(r);
+        int searchResult = search(uuid);
         if (searchResult < 0) {
             System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
             return;
@@ -63,9 +62,8 @@ public abstract class  AbstractArrayStorage implements Storage {
         deleteItem(searchResult);
     }
     public Resume get(String uuid) {
-        Resume r = new Resume(uuid);
-        int foundedIndex = search(r);
-        if (search(r) >= 0) {
+        int foundedIndex = search(uuid);
+        if (foundedIndex >= 0) {
             return storage[foundedIndex];
         } else {
             System.out.println("Can't Get. Resume with UUID " + uuid + " not found");
@@ -89,5 +87,5 @@ public abstract class  AbstractArrayStorage implements Storage {
         lastUsedIndex--;
     }
 
-    protected abstract int search(Resume r);
+    protected abstract int search(String uuid);
 }

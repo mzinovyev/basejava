@@ -14,7 +14,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     public void update(Resume r) {
-        int foundedIndex = search(r);
+        int foundedIndex = search(r.toString());
         if (foundedIndex >= 0) {
             storage[foundedIndex] = r;
             System.out.println("Updated. Resume with UUID " + r.toString());
@@ -35,7 +35,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         lastUsedIndex += 1; // increment array capacity after insert
     }
 
-    protected int search(Resume r) {
+    protected int search(String uuid) {
+        Resume r = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, lastUsedIndex + 1, r);
     };
 }
