@@ -5,20 +5,20 @@ import com.urise.webapp.model.Resume;
 
 public abstract class  AbstractArrayStorage implements Storage {
     protected final static int STORAGE_LIMIT = 10_000;
-    protected int lastUsedIndex = -1;
+    protected int storageCapacity = 0;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
     public void clear() {
-        if (lastUsedIndex != -1) {
-            Arrays.fill(storage, 0, lastUsedIndex + 1, null);
-            lastUsedIndex = -1;
+        if (storageCapacity > 0) {
+            Arrays.fill(storage, 0, storageCapacity - 1, null);
+            storageCapacity = 0;
         }
     }
 
     public void update(Resume r) {
-        int foundedIndex = findIndex(r.toString());
-        if (foundedIndex >= 0) {
-            storage[foundedIndex] = r;
+        int index = findIndex(r.toString());
+        if (index >= 0) {
+            storage[index] = r;
             System.out.println("Updated. Resume with UUID " + r);
         } else {
             System.out.println("Can't Update. Resume with UUID " + r + " not found");
@@ -26,45 +26,34 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume r) {
-        if (lastUsedIndex == storage.length) {
-            System.out.println("Error saving resume with UUID " + r.toString() + " : storage is full");
+        if (storageCapacity == storage.length) {
+            System.out.println("Error saving resume with UUID " + r + " : storage is full");
             return;
         }
 
-        if(lastUsedIndex < 0) { //check if array is empty
-            storage[0] = r;
-            lastUsedIndex = 0;
-            return;
-        }
-
-        int searchResult = findIndex(r.toString());
-        if (searchResult >= 0) {
+        int index = findIndex(r.toString());
+        if (index >= 0) {
             System.out.println("Can't Save. Resume with UUID " + r + " already exist");
             return;
         }
 
-        insertItem(r, - (searchResult + 1)); //
+        insertItem(r, - (index + 1)); //
     }
 
     public void delete(String uuid) {
-        int searchResult = findIndex(uuid);
-        if (searchResult < 0) {
+        int index = findIndex(uuid);
+        if (index < 0) {
             System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
             return;
         }
 
-        if (searchResult == lastUsedIndex) { // delete last element
-            storage[searchResult] = null;
-            lastUsedIndex -= 1;
-            return;
-        }
-
-        deleteItem(searchResult);
+        deleteItem(index);
+        storageCapacity --;
     }
     public Resume get(String uuid) {
-        int foundedIndex = findIndex(uuid);
-        if (foundedIndex >= 0) {
-            return storage[foundedIndex];
+        int index = findIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         } else {
             System.out.println("Can't Get. Resume with UUID " + uuid + " not found");
             return null;
@@ -72,19 +61,18 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, lastUsedIndex + 1);
+        return Arrays.copyOf(storage, storageCapacity);
     }
 
     public int size() {
-        return lastUsedIndex + 1;
+        return storageCapacity;
     }
 
-    protected abstract void insertItem(Resume r, int foundedIndex);
+    protected abstract void insertItem(Resume r, int insertIndex);
 
-    protected void deleteItem(int foundedIndex){
-        System.arraycopy(storage, foundedIndex + 1, storage, foundedIndex, lastUsedIndex - foundedIndex);
-        storage[lastUsedIndex] = null;
-        lastUsedIndex--;
+    protected void deleteItem(int index){
+        System.arraycopy(storage, index + 1, storage, index, (storageCapacity - 1) - index);
+        storage[storageCapacity - 1] = null;
     }
 
     protected abstract int findIndex(String uuid);
