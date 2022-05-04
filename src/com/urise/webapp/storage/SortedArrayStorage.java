@@ -14,12 +14,12 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     public void update(Resume r) {
-        int foundedIndex = findIndex(r.toString());
-        if (foundedIndex >= 0) {
-            storage[foundedIndex] = r;
-            System.out.println("Updated. Resume with UUID " + r.toString());
+        int index = findIndex(r.toString());
+        if (index >= 0) {
+            storage[index] = r;
+            System.out.println("Updated. Resume with UUID " + r);
         } else {
-            System.out.println("Can't Update. Resume with UUID " + r.toString() + " not found");
+            System.out.println("Can't Update. Resume with UUID " + r + " not found");
         }
     }
 
@@ -32,7 +32,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void insertItem(Resume r, int insertIndex) {
         System.arraycopy(storage, insertIndex, storage, insertIndex + 1, (lastUsedIndex + 1) - insertIndex);
         storage[insertIndex] = r;
-        lastUsedIndex += 1; // increment array capacity after insert
     }
 
     protected int findIndex(String uuid) {

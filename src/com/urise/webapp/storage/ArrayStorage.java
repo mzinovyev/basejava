@@ -4,9 +4,8 @@ import com.urise.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    protected void insertItem(Resume r, int foundedIndex) {
+    protected void insertItem(Resume r, int index) {
         storage[lastUsedIndex + 1] = r;
-        lastUsedIndex += 1; // increment array capacity after insert
     }
 
     // If element with uuid founded, return index. Else, return -1;
