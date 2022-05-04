@@ -10,7 +10,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     // If element with uuid founded, return index. Else, return -1;
-    protected int search(String uuid) {
+    protected int findIndex(String uuid) {
         for (int i = 0; i <= lastUsedIndex; i++) {
             if (storage[i].toString() == uuid) {
                 return i;
