@@ -5,13 +5,13 @@ import com.urise.webapp.model.Resume;
 
 public abstract class  AbstractArrayStorage implements Storage {
     protected final static int STORAGE_LIMIT = 10_000;
-    protected int lastUsedIndex = -1;
+    protected int storageCapacity = 0;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
     public void clear() {
-        if (lastUsedIndex != -1) {
-            Arrays.fill(storage, 0, lastUsedIndex + 1, null);
-            lastUsedIndex = -1;
+        if (storageCapacity > 0) {
+            Arrays.fill(storage, 0, storageCapacity - 1, null);
+            storageCapacity = 0;
         }
     }
 
@@ -26,14 +26,8 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume r) {
-        if (lastUsedIndex == storage.length) {
-            System.out.println("Error saving resume with UUID " + r.toString() + " : storage is full");
-            return;
-        }
-
-        if(lastUsedIndex < 0) { //check if array is empty
-            storage[0] = r;
-            lastUsedIndex = 0;
+        if (storageCapacity == storage.length) {
+            System.out.println("Error saving resume with UUID " + r + " : storage is full");
             return;
         }
 
@@ -43,8 +37,7 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        insertItem(r, - (index + 1));
-        lastUsedIndex ++;// increment array capacity after insert
+        insertItem(r, - (index + 1)); //
     }
 
     public void delete(String uuid) {
@@ -54,13 +47,8 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        if (index == lastUsedIndex) { // delete last element
-            storage[index] = null;
-            lastUsedIndex -= 1;
-            return;
-        }
-
         deleteItem(index);
+        storageCapacity --;
     }
     public Resume get(String uuid) {
         int index = findIndex(uuid);
@@ -73,19 +61,18 @@ public abstract class  AbstractArrayStorage implements Storage {
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, lastUsedIndex + 1);
+        return Arrays.copyOf(storage, storageCapacity);
     }
 
     public int size() {
-        return lastUsedIndex + 1;
+        return storageCapacity;
     }
 
-    protected abstract void insertItem(Resume r, int index);
+    protected abstract void insertItem(Resume r, int insertIndex);
 
     protected void deleteItem(int index){
-        System.arraycopy(storage, index + 1, storage, index, lastUsedIndex - index);
-        storage[lastUsedIndex] = null;
-        lastUsedIndex--;
+        System.arraycopy(storage, index + 1, storage, index, (storageCapacity - 1) - index);
+        storage[storageCapacity - 1] = null;
     }
 
     protected abstract int findIndex(String uuid);
