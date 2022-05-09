@@ -37,7 +37,7 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        insertItem(r, - (index + 1)); //
+        insertItem(r, index); //
     }
 
     public void delete(String uuid) {

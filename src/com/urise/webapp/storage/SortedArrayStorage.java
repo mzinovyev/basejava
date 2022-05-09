@@ -5,12 +5,12 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    // why it can be @override or not ???
     // insertItem didn`t check array size, it checked in save method
-    protected void insertItem(Resume r, int insertIndex) {
+    protected void insertItem(Resume r, int index) {
+        int insertIndex = - (index + 1);
         System.arraycopy(storage, insertIndex, storage, insertIndex + 1, storageCapacity - insertIndex);
         storage[insertIndex] = r;
-        storageCapacity ++; // increment array capacity after insert
+        storageCapacity++;
     }
 
     protected int findIndex(String uuid) {
