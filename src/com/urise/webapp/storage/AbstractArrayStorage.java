@@ -37,7 +37,8 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        insertItem(r, index); //
+        insertItem(r, index);
+        storageCapacity++;
     }
 
     public void delete(String uuid) {
@@ -46,6 +47,7 @@ public abstract class  AbstractArrayStorage implements Storage {
             System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
             return;
         }
+
         System.arraycopy(storage, index + 1, storage, index, (storageCapacity - 1) - index);
         storage[storageCapacity - 1] = null;
         storageCapacity--;
@@ -55,6 +57,7 @@ public abstract class  AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
+
         System.out.println("Can't Get. Resume with UUID " + uuid + " not found");
         return null;
     }

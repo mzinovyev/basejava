@@ -10,7 +10,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int insertIndex = - (index + 1);
         System.arraycopy(storage, insertIndex, storage, insertIndex + 1, storageCapacity - insertIndex);
         storage[insertIndex] = r;
-        storageCapacity++;
     }
 
     protected int findIndex(String uuid) {
