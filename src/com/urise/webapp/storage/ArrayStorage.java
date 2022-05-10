@@ -6,7 +6,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void insertItem(Resume r, int foundedIndex) {
         storage[storageCapacity] = r;
-        storageCapacity ++; // increment array capacity after insert
     }
 
     // If element with uuid founded, return index. Else, return -1;
