@@ -25,7 +25,7 @@ public abstract class  AbstractArrayStorage implements Storage {
         }
     }
 
-    public void save(Resume r) {
+    public final void save(Resume r) {
         if (storageCapacity == storage.length) {
             System.out.println("Error saving resume with UUID " + r + " : storage is full");
             return;
@@ -37,11 +37,11 @@ public abstract class  AbstractArrayStorage implements Storage {
             return;
         }
 
-        insertItem(r, index);
+        insertItem(r, index);private Storage storage = new ArrayStorage();
         storageCapacity++;
     }
 
-    public void delete(String uuid) {
+    public final void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
             System.out.println("Can't Delete. Resume with UUID " + uuid + " not found");
